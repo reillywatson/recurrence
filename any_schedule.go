@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// AnySchedule acts as a wrapper around...any schedule. Why does this exists?
+// AnySchedule acts as a wrapper around...any schedule. Why does this exist?
 // Since the tree of Schedules is an arbitrary relationship of interfaces, we
 // need a struct to *easily* marshal/unmarshal json of the entire schedule
 // hierarchy.
