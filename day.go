@@ -24,7 +24,7 @@ func (self Day) Occurrences(tr TimeRange) chan time.Time {
 	return occurrencesFor(self, tr)
 }
 
-func (self Day) nextAfter(t time.Time) (time.Time, error) {
+func (self Day) NextAfter(t time.Time) (time.Time, error) {
 	desiredDay := int(self)
 
 	if desiredDay == Last {
@@ -40,21 +40,21 @@ func (self Day) nextAfter(t time.Time) (time.Time, error) {
 			return t.AddDate(0, 0, 1), nil
 		}
 
-		return self.nextAfter(t.AddDate(0, 0, 1))
+		return self.NextAfter(t.AddDate(0, 0, 1))
 	}
 
 	if t.Day() < desiredDay {
 		totalDays := lastDayOfMonth(t).Day()
 		if totalDays < desiredDay {
-			return self.nextAfter(t.AddDate(0, 1, 0))
+			return self.NextAfter(t.AddDate(0, 1, 0))
 		}
 
-		return time.Date(t.Year(), t.Month(), desiredDay, 0, 0, 0, 0, time.UTC), nil
+		return time.Date(t.Year(), t.Month(), desiredDay, 0, 0, 0, 0, t.Location()), nil
 	}
 
 	totalDaysNextMonth := lastDayOfMonth(lastDayOfMonth(t).AddDate(0, 0, 1)).Day()
 	if totalDaysNextMonth < desiredDay {
-		return self.nextAfter(t.AddDate(0, 2, -1))
+		return self.NextAfter(t.AddDate(0, 2, -1))
 	}
 
 	return t.AddDate(0, 1, 0), nil
@@ -101,5 +101,5 @@ func lastDayOfMonth(t time.Time) time.Time {
 }
 
 func firstDayOfMonth(t time.Time) time.Time {
-	return time.Date(t.Year(), t.Month(), 1, 0, 0, 0, 0, time.UTC)
+	return time.Date(t.Year(), t.Month(), 1, 0, 0, 0, 0, t.Location())
 }

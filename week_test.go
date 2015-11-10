@@ -7,7 +7,7 @@ import (
 )
 
 func TestWeek(t *testing.T) {
-	tr := MonthRange(January, 2006)
+	tr := MonthRange(January, 2006, time.UTC)
 
 	assertIsOnlyOccurring(t, tr, Week(First), "2006-01-01", "2006-01-02",
 		"2006-01-03", "2006-01-04", "2006-01-05", "2006-01-06", "2006-01-07")

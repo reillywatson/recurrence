@@ -22,7 +22,7 @@ func (self TimeRange) Occurrences(other TimeRange) chan time.Time {
 	return occurrencesFor(self, other)
 }
 
-func (self TimeRange) nextAfter(t time.Time) (time.Time, error) {
+func (self TimeRange) NextAfter(t time.Time) (time.Time, error) {
 	if t.Before(self.Start) {
 		return self.Start, nil
 	}
@@ -69,15 +69,15 @@ func NewTimeRange(start, end string) TimeRange {
 }
 
 // Generate a TimeRange representing the entire year.
-func YearRange(y int) TimeRange {
+func YearRange(y int, location *time.Location) TimeRange {
 	return TimeRange{
-		time.Date(y, time.January, 1, 0, 0, 0, 0, time.UTC),
-		time.Date(y+1, time.January, 0, 0, 0, 0, 0, time.UTC),
+		time.Date(y, time.January, 1, 0, 0, 0, 0, location),
+		time.Date(y+1, time.January, 0, 0, 0, 0, 0, location),
 	}
 }
 
 // Generate a TimeRange representing a specific month.
-func MonthRange(month interface{}, year int) TimeRange {
+func MonthRange(month interface{}, year int, location *time.Location) TimeRange {
 	var m time.Month
 
 	switch t := month.(type) {
@@ -92,13 +92,13 @@ func MonthRange(month interface{}, year int) TimeRange {
 	}
 
 	return TimeRange{
-		time.Date(year, m, 1, 0, 0, 0, 0, time.UTC),
-		time.Date(year, m+1, 0, 0, 0, 0, 0, time.UTC),
+		time.Date(year, m, 1, 0, 0, 0, 0, location),
+		time.Date(year, m+1, 0, 0, 0, 0, 0, location),
 	}
 }
 
 func beginningOfDay(t time.Time) time.Time {
-	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, time.UTC)
+	return time.Date(t.Year(), t.Month(), t.Day(), 0, 0, 0, 0, t.Location())
 }
 
 func (self TimeRange) eachDate() chan time.Time {

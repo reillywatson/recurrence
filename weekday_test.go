@@ -7,7 +7,7 @@ import (
 )
 
 func TestWeekday(t *testing.T) {
-	tr := MonthRange(January, 2006)
+	tr := MonthRange(January, 2006, time.UTC)
 
 	assertIsOnlyOccurring(t, tr, Sunday,
 		"2006-01-01", "2006-01-08", "2006-01-15", "2006-01-22", "2006-01-29")

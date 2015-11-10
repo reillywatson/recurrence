@@ -1,9 +1,12 @@
 package recurrence
 
-import "testing"
+import (
+	"testing"
+	"time"
+)
 
 func TestOrdinalWeekday(t *testing.T) {
-	r := YearRange(2006)
+	r := YearRange(2006, time.UTC)
 
 	// First
 	assertIsOnlyOccurring(t, r, OrdinalWeekday(First, Sunday),

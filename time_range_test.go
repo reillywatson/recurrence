@@ -19,19 +19,19 @@ func assertStartTimeAndEndTime(t *testing.T, r TimeRange, start string, end stri
 }
 
 func TestYearRange(t *testing.T) {
-	assertStartTimeAndEndTime(t, YearRange(2006), "2006-01-01", "2006-12-31")
-	assertStartTimeAndEndTime(t, YearRange(2014), "2014-01-01", "2014-12-31")
+	assertStartTimeAndEndTime(t, YearRange(2006, time.UTC), "2006-01-01", "2006-12-31")
+	assertStartTimeAndEndTime(t, YearRange(2014, time.UTC), "2014-01-01", "2014-12-31")
 }
 
 func TestMonthRange(t *testing.T) {
-	assertStartTimeAndEndTime(t, MonthRange(time.January, 2006), "2006-01-01", "2006-01-31")
-	assertStartTimeAndEndTime(t, MonthRange(time.February, 2006), "2006-02-01", "2006-02-28")
-	assertStartTimeAndEndTime(t, MonthRange(time.February, 2008), "2008-02-01", "2008-02-29")
+	assertStartTimeAndEndTime(t, MonthRange(time.January, 2006, time.UTC), "2006-01-01", "2006-01-31")
+	assertStartTimeAndEndTime(t, MonthRange(time.February, 2006, time.UTC), "2006-02-01", "2006-02-28")
+	assertStartTimeAndEndTime(t, MonthRange(time.February, 2008, time.UTC), "2008-02-01", "2008-02-29")
 }
 
 func TestMonthRangeIncludes(t *testing.T) {
-	y := YearRange(2006)
-	m := MonthRange(January, 2006)
+	y := YearRange(2006, time.UTC)
+	m := MonthRange(January, 2006, time.UTC)
 
 	assertIsOnlyOccurring(t, y, m, "2006-01-01", "2006-01-02", "2006-01-03",
 		"2006-01-04", "2006-01-05", "2006-01-06", "2006-01-07", "2006-01-08",
@@ -43,9 +43,9 @@ func TestMonthRangeIncludes(t *testing.T) {
 }
 
 func TestMonthRangeAcceptableArguments(t *testing.T) {
-	MonthRange(January, 2006)
-	MonthRange(time.January, 2006)
-	MonthRange(1, 2006)
+	MonthRange(January, 2006, time.UTC)
+	MonthRange(time.January, 2006, time.UTC)
+	MonthRange(1, 2006, time.UTC)
 
 	if x := recover(); x != nil {
 		t.Errorf("Panicked on MonthRange tests")

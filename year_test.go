@@ -11,15 +11,15 @@ import (
 func TestYearIsOccurring(t *testing.T) {
 	y := Year(2006)
 
-	refuteAllOccurring(t, YearRange(2005), y)
-	assertAllOccurring(t, YearRange(2006), y)
-	refuteAllOccurring(t, YearRange(2007), y)
+	refuteAllOccurring(t, YearRange(2005, time.UTC), y)
+	assertAllOccurring(t, YearRange(2006, time.UTC), y)
+	refuteAllOccurring(t, YearRange(2007, time.UTC), y)
 
 	y = Year(2007)
 
-	refuteAllOccurring(t, YearRange(2005), y)
-	refuteAllOccurring(t, YearRange(2006), y)
-	assertAllOccurring(t, YearRange(2007), y)
+	refuteAllOccurring(t, YearRange(2005, time.UTC), y)
+	refuteAllOccurring(t, YearRange(2006, time.UTC), y)
+	assertAllOccurring(t, YearRange(2007, time.UTC), y)
 }
 
 func TestYearOccurrences(t *testing.T) {

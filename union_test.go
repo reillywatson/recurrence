@@ -12,7 +12,7 @@ func TestUnion(t *testing.T) {
 		OrdinalWeekday(First, Sunday),
 		Day(Last),
 	}
-	r := YearRange(2006)
+	r := YearRange(2006, time.UTC)
 
 	assertIsOnlyOccurring(t, r, u, "2006-01-01", "2006-02-05", "2006-03-05",
 		"2006-04-02", "2006-05-07", "2006-06-04", "2006-07-02", "2006-08-06",

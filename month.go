@@ -39,16 +39,16 @@ func (self Month) Occurrences(tr TimeRange) chan time.Time {
 	return occurrencesFor(self, tr)
 }
 
-func (self Month) nextAfter(t time.Time) (time.Time, error) {
+func (self Month) NextAfter(t time.Time) (time.Time, error) {
 	desiredMonth := int(self)
 	tMonth := int(t.Month())
 
 	if tMonth < desiredMonth {
-		return time.Date(t.Year(), time.Month(desiredMonth), 1, 0, 0, 0, 0, time.UTC), nil
+		return time.Date(t.Year(), time.Month(desiredMonth), 1, 0, 0, 0, 0, t.Location()), nil
 	}
 
 	if tMonth > desiredMonth || (tMonth == desiredMonth && isLastDayInMonth(t)) {
-		return time.Date(t.Year()+1, time.Month(desiredMonth), 1, 0, 0, 0, 0, time.UTC), nil
+		return time.Date(t.Year()+1, time.Month(desiredMonth), 1, 0, 0, 0, 0, t.Location()), nil
 	}
 
 	return t.AddDate(0, 0, 1), nil

@@ -7,7 +7,7 @@ import (
 )
 
 func TestMonth(t *testing.T) {
-	r := YearRange(2006)
+	r := YearRange(2006, time.UTC)
 
 	assertIsOnlyOccurring(t, r, January, "2006-01-01", "2006-01-02",
 		"2006-01-03", "2006-01-04", "2006-01-05", "2006-01-06", "2006-01-07",

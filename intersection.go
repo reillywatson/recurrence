@@ -22,42 +22,34 @@ func (self Intersection) IsOccurring(t time.Time) bool {
 
 // Implement Schedule interface.
 func (self Intersection) Occurrences(t TimeRange) chan time.Time {
-	ch := make(chan time.Time)
-	done := make(chan bool, len(self))
-	candidates := make(chan time.Time)
+	return occurrencesFor(self, t)
+}
 
-	for _, schedule := range self {
-		go func(schedule Schedule) {
-			for t := range schedule.Occurrences(t) {
-				candidates <- t
-			}
-			done <- true
-		}(schedule)
+// Implement Schedule interface.
+func (self Intersection) NextAfter(t time.Time) (time.Time, error) {
+	var zeroTime time.Time
+	if len(self) == 0 {
+		return zeroTime, fmt.Errorf("no more occurrences after %s", t)
 	}
-
-	go func() {
-		candidatesMap := make(map[string]int)
-		for candidate := range candidates {
-			key := candidate.Format("20060102")
-			foundCount, _ := candidatesMap[key]
-			newFoundCount := foundCount + 1
-			candidatesMap[key] = newFoundCount
-			if newFoundCount == len(self) {
-				ch <- candidate
+	current, err := self[0].NextAfter(t)
+	if err != nil {
+		return zeroTime, err
+	}
+	matchedAll := false
+	for !matchedAll {
+		matchedAll = true
+		for _, schedule := range self {
+			if !schedule.IsOccurring(current) {
+				matchedAll = false
+				var err error
+				current, err = schedule.NextAfter(current)
+				if err != nil {
+					return zeroTime, fmt.Errorf("no more occurrences after %s", t)
+				}
 			}
 		}
-	}()
-
-	go func() {
-		for i := 0; i < len(self); i++ {
-			<-done
-		}
-		close(ch)
-		close(done)
-		close(candidates)
-	}()
-
-	return ch
+	}
+	return current, nil
 }
 
 // Implement json.Marshaler interface.

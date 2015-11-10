@@ -34,7 +34,7 @@ func (self Weekday) Occurrences(tr TimeRange) chan time.Time {
 	return occurrencesFor(self, tr)
 }
 
-func (self Weekday) nextAfter(t time.Time) (time.Time, error) {
+func (self Weekday) NextAfter(t time.Time) (time.Time, error) {
 	diff := int(self) - int(t.Weekday())
 	if diff <= 0 {
 		diff += 7

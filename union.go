@@ -22,41 +22,29 @@ func (self Union) IsOccurring(t time.Time) bool {
 
 // Implement Schedule interface.
 func (self Union) Occurrences(t TimeRange) chan time.Time {
-	ch := make(chan time.Time)
-	done := make(chan bool, len(self))
-	candidates := make(chan time.Time)
+	return occurrencesFor(self, t)
+}
 
-	for _, schedule := range self {
-		go func(schedule Schedule) {
-			for t := range schedule.Occurrences(t) {
-
-				candidates <- t
-			}
-			done <- true
-		}(schedule)
+// Implement Schedule interface
+func (self Union) NextAfter(t time.Time) (time.Time, error) {
+	var zeroTime time.Time
+	if len(self) == 0 {
+		return zeroTime, fmt.Errorf("no more occurrences after %s", t)
 	}
-
-	go func() {
-		candidatesMap := make(map[string]bool)
-		for candidate := range candidates {
-			key := candidate.Format("20060102")
-			_, found := candidatesMap[key]
-			if !found {
-				candidatesMap[key] = true
-				ch <- candidate
-			}
+	earliest := time.Time{}
+	var err error
+	for _, schedule := range self {
+		next, schedErr := schedule.NextAfter(t)
+		if err == nil && (earliest.IsZero() || next.Before(earliest)) {
+			earliest = next
 		}
-	}()
-
-	go func() {
-		for i := 0; i < len(self); i++ {
-			<-done
+		if earliest.IsZero() {
+			err = schedErr
+		} else {
+			err = nil
 		}
-		close(ch)
-		close(done)
-	}()
-
-	return ch
+	}
+	return earliest, err
 }
 
 // Implement json.Marshaler interface.

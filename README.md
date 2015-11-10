@@ -71,8 +71,8 @@ forty_days := recurrence.TimeRange{time.Now(), time.Now().AddDate(0, 0, 40)}
 Some shortcuts are provided for common time ranges.
 
 ```go
-recurrence.YearRange(2525)
-recurrence.MonthRange(time.January, 2525)
+recurrence.YearRange(2525, time.UTC)
+recurrence.MonthRange(time.January, 2525, time.UTC)
 ```
 
 ## Set Operations

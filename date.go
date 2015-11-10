@@ -19,7 +19,7 @@ func (self Date) Occurrences(tr TimeRange) chan time.Time {
 	return occurrencesFor(self, tr)
 }
 
-func (self Date) nextAfter(t time.Time) (time.Time, error) {
+func (self Date) NextAfter(t time.Time) (time.Time, error) {
 	if t.Before(time.Time(self)) {
 		return time.Time(self), nil
 	}

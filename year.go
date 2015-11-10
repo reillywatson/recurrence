@@ -24,7 +24,7 @@ func (self Year) Occurrences(tr TimeRange) chan time.Time {
 	return occurrencesFor(self, tr)
 }
 
-func (self Year) nextAfter(t time.Time) (time.Time, error) {
+func (self Year) NextAfter(t time.Time) (time.Time, error) {
 	desiredYear := int(self)
 
 	if t.Year() == desiredYear && !isLastDayOfYear(t) {
@@ -32,7 +32,7 @@ func (self Year) nextAfter(t time.Time) (time.Time, error) {
 	}
 
 	if t.Year() < desiredYear {
-		return time.Date(desiredYear, time.January, 1, 0, 0, 0, 0, time.UTC), nil
+		return time.Date(desiredYear, time.January, 1, 0, 0, 0, 0, t.Location()), nil
 	}
 
 	var zeroTime time.Time

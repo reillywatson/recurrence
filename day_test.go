@@ -7,7 +7,7 @@ import (
 )
 
 func TestDayIncludes(t *testing.T) {
-	r := YearRange(2006)
+	r := YearRange(2006, time.UTC)
 
 	assertIsOnlyOccurring(t, r, Day(1), "2006-01-01", "2006-02-01", "2006-03-01",
 		"2006-04-01", "2006-05-01", "2006-06-01", "2006-07-01", "2006-08-01",
