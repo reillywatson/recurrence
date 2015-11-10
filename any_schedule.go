@@ -24,6 +24,7 @@ func (self AnySchedule) Occurrences(t TimeRange) chan time.Time {
 	return self.Schedule.Occurrences(t)
 }
 
+// Implement Schedule interface.
 func (self AnySchedule) NextAfter(t time.Time) (time.Time, error) {
 	return self.Schedule.NextAfter(t)
 }
