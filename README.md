@@ -5,7 +5,7 @@ Calendar recurrence rules in Go.
 
 Basically, implementing the strategy described in [Martin Fowler's paper](http://martinfowler.com/apsupp/recurring.pdf). Read it. It's fun.
 
-Check out the [full docs on godoc.org](http://godoc.org/github.com/danott/recurrence)
+Check out the [full docs on godoc.org](http://godoc.org/github.com/reillywatson/recurrence)
 
 ## Schedule
 
