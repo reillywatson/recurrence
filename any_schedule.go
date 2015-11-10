@@ -24,6 +24,10 @@ func (self AnySchedule) Occurrences(t TimeRange) chan time.Time {
 	return self.Schedule.Occurrences(t)
 }
 
+func (self AnySchedule) NextAfter(t time.Time) (time.Time, error) {
+	return self.Schedule.NextAfter(t)
+}
+
 // Implement json.Marshaler interface.
 func (d AnySchedule) MarshalJSON() ([]byte, error) {
 	return json.Marshal(d.Schedule)
